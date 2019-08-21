@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <!-- <keep-alive> -->
+    <transition name="van-slide-right" mode="out-in">
       <router-view />
+    </transition>
     <!-- </keep-alive> -->
   </div>
 </template>

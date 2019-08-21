@@ -1,7 +1,6 @@
 <template>
   <div>
-    <transition name="van-slide-up">
-      <div class="search" size="30px" v-show="a">
+      <div class="search" size="30px">
         <van-icon name="cross" class="cross" @click="goBack"/>
         <van-search class="search-text"
           background="#f2f2f2"
@@ -15,10 +14,11 @@
           <van-icon slot="action" name="cart-o"  class="cart-o"/>
         </van-search>
       </div>
-    </transition>
-    <p @click="sas" class="a">125255221121</p>
-      <van-list class="search-list">
-      <van-cell :value="item.name" is-link to="/" v-for="(item, i) in searchList" :key="i"/>
+      <van-list class="search-list" v-if="isList">
+         <van-cell value="暂无数据"/>
+      </van-list>
+      <van-list class="search-list" v-else>
+      <van-cell :value="item.name" is-link  v-for="(item, i) in searchList" :key="i"/>
       </van-list>
   </div>
 </template>
@@ -33,14 +33,13 @@ export default {
         return {
           value:'',
           searchList:[],
-          a:false
+          isList: false
         };
     },
     computed: {
 
     },
     created() {
-
     },
     mounted() {
 
@@ -50,16 +49,18 @@ export default {
     },
     methods: {
       async onSearch () {
+        if(this.value == "") {
+          this.isList = true
+          return false;
+        }
+        this.isList = false
         let { search } = await api.postSearch('/search',this.value)
         this.searchList = search
+        console.log(this.searchList )
       },
       goBack () {
         this.$router.go(-1)
       },
-      sas () {
-        this.a = !this.a 
-        console.log(this.a)
-      }
     },
     components: {
 
@@ -68,13 +69,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.v-enter,.v-leave-to{
-  opacity:0;
-}
-.v-enter-active,.v-leave-active{
-   transition: opacity .5s;
-}
-.a{margin-top:200px;}
 .search{
   display:flex;
   padding:0 20px;

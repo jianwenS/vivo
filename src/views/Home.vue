@@ -15,7 +15,7 @@
           <van-sticky :offset-top="0">
             <van-nav-bar title="vivo"  left-arrow>
               <van-icon name="arrow-left" slot="left" />
-              <van-icon name="search" slot="right" />
+              <van-icon name="search" slot="right" @click="goSearch"/>
               <van-icon name="contact" slot="right" />
             </van-nav-bar>
           </van-sticky>
@@ -59,7 +59,22 @@
       </h2>
       <goods-list :goodsList="goodsList"></goods-list>
 
+      <!-- 人气推荐 -->
+      <h2 class="goods-title">
+        <img src="../assets/like.png">
+        <span>人气推荐</span>
+      </h2>
+      <div class="like">
+        <div class="like-item van-hairline--surround" v-for="(item, i) in popularCom" :key="i">{{item}}</div>
+      </div>
+
     </div>
+
+    <footer class="footer">
+      <p>Copyright &copy;1692011-2019</p>
+      <P>深圳莜橙科技有限公司 版权所有 保留一切权利</p>
+      <P>隐私政策 | 法律声明 | 粤B2-20080267 | 粤ICP备05100288号</p>
+    </footer>
 
     </div>
 </template>
@@ -80,18 +95,23 @@ export default {
             {src:require('@/assets/icon2.png'),text:'配件'},
             {src:require('@/assets/icon3.png'),text:'分类'}
           ],
-          goodsList:[]
+          goodsList:[],
+          popular:''
 
         };
     },
     computed: {
       titleCom () {
         return this.title.split(',')
+      },
+      popularCom () {
+        return this.popular.split(',')
       }
     },
     created() {
       this.getSwiper()
       this.getHot()
+      this.getPopular()
     },
     mounted() {
     },
@@ -107,6 +127,13 @@ export default {
         let {hot} = await api.getHot('/hot')
         this.goodsList = hot
       },
+      async getPopular() {
+         let {data} = await api.getPopular('/Popular')
+         this.popular = data
+      },
+      goSearch () {
+        this.$router.push('/search')
+      }
 
     },
     components: {
@@ -165,5 +192,40 @@ export default {
 
  }
 
+ .like{
+   width:100%;
+   display:flex;
+   flex-wrap:wrap;
+   justify-content:flex-start;
+
+   .like-item{
+    display:flex;
+    width:70px;
+    margin-right:10px;
+    height:35px;
+    border:1px solid #cccccc;
+    justify-content:center;
+    align-items:center;
+    border-radius:16px;
+    margin-bottom:17px;
+   }
+
+   .like-item:nth-child(4n){
+    margin-right:0px;
+   }
+  
+ }
+
+}
+.footer{
+  height:132px;
+  background:#000000;
+  box-sizing:border-box;
+  padding:33px 0;
+
+  p{
+    margin-bottom:10px;
+    color:#ffffff;
+  }
 }
 </style>

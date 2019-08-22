@@ -3,7 +3,7 @@
       <!-- nav -->
       <van-sticky :offset-top="0">
         <van-nav-bar :title="text"  left-arrow>
-          <van-icon name="wap-nav" slot="left" @click="goSearch"/>
+          <van-icon name="wap-nav" slot="left" @click="goHome"/>
           <van-icon name="search" slot="right" @click="goSearch"/>
           <van-icon name="idcard" slot="right" @click="goSearch"/>
         </van-nav-bar>
@@ -35,6 +35,9 @@ export default {
     methods: {
       goSearch () {
         this.$router.push('/search')
+      },
+      goHome () {
+        this.$router.push('/')
       }
     },
     components: {

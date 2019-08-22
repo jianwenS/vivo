@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import Search from './views/Search.vue' 
 import Categroay from './views/categroay.vue'
 import goodsDetail from './views/goodsDetail.vue'
+import money from './views/money.vue'
 
 Vue.use(Router)
 
@@ -13,8 +14,12 @@ export default new Router({
   routes: [
     {
       path: '/',
+      redirect: '/home'
+    },
+    {
+      path: '/home',
       name: 'home',
-      component: Home
+      component: Home,
     },
     {
       path: '/search',
@@ -30,6 +35,11 @@ export default new Router({
       path: '/goodsDetail',
       name: 'goodsDetail',
       component: goodsDetail
+    },
+    {
+      path: '/money',
+      name: 'money',
+      component: money
     }
   ]
 })

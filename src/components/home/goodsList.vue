@@ -1,7 +1,10 @@
 <template>
     <div>
         <van-grid square :column-num="2" class="goods-main">
-          <van-grid-item class="van-hairline--right van-hairline--bottom goods-item" v-for="(item, i) in goodsList" :key="i">
+          <van-grid-item class="van-hairline--right van-hairline--bottom goods-item" 
+          v-for="(item, i) in goodsList" 
+          :key="i"
+          @click="goodDetail(item.id)">
               <van-image :src="item.url" />
               <p class="goods-name">{{item.text}}</p>
               <p class="goods-message">{{item.msg}}</p>
@@ -36,7 +39,11 @@ export default {
 
     },
     methods: {
-
+      goodDetail (id) {
+        this.$router.push({
+          name:'goodsDetail'
+        })
+      }
     },
     components: {
 

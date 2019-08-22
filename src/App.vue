@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- <keep-alive> -->
-    <transition name="van-slide-right" mode="out-in">
+    <transition name="fade">
       <router-view />
     </transition>
     <!-- </keep-alive> -->
@@ -16,6 +16,15 @@ export default {
 </script>
 
 <style>
+.fade-enter,
+.fade-leave-to {
+  transform: translateX(0%);
+}
+.fade-leave-active,
+.fade-enter-active {
+transition: all 0.5s;
+transform: translateX(-100%);
+}
 *{margin:0;padding:0;}
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;

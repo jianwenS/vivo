@@ -11,9 +11,13 @@ let getPopular = function(url,params) {
 let postSearch = function(url,params) {
   return post(url,params)
 }
+let getCity = function(url,params) {
+  return get(url,params)
+}
 export default {
   getSwiper,
   getHot,
   getPopular,
-  postSearch
+  postSearch,
+  getCity
 }

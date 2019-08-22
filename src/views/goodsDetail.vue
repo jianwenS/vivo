@@ -14,6 +14,17 @@
             <p>高通骁龙855旗舰处理器，44W闪充，超级液冷散热，4D游戏 震感2.0+游戏环绕音，Monster Touch压感按键 （付款后3天 内发货）</p>
             <h3>￥1198.00</h3>
           </div>
+          <div class="good_main">
+            <div class="good_main_Cs">
+              <span>已选</span>
+              <span class="text" @click="changeGood">{{goodsCs}}</span>
+            </div>
+            <h5>
+                <p>正品行货</p>
+                <p>假一赔十</p>
+                <p>1年质保</p>
+            </h5>
+          </div>
           <!-- 订单参数 -->
           <div class="good_cs">
             <van-sku
@@ -30,10 +41,36 @@
               disable-stepper-input
               :close-on-click-overlay="closeOnClickOverlay" 
               :custom-sku-validator="customSkuValidator"  
+              buy-text="确认"
+              add-cart-text="取消"
+              ref="good_sku"
               @buy-clicked="onBuyClicked"
               @add-cart="onAddCartClicked"
             />
           </div>
+
+          <van-goods-action>
+            <van-goods-action-icon
+              icon="chat-o"
+              text="客服"
+              @click="onClickIcon"
+            />
+            <van-goods-action-icon
+              icon="cart-o"
+              text="购物车"
+              @click="onClickIcon"
+            />
+            <van-goods-action-button
+              type="warning"
+              text="加入购物车"
+              @click="onClickButton"
+            />
+            <van-goods-action-button
+              type="danger"
+              text="立即购买"
+              @click="onClickButton"
+            />
+          </van-goods-action>
 
         </div>
         
@@ -43,6 +80,7 @@
 <script>
 import api from '@/api/api'
 import comTitle from '@/components/comtitle/comTitle'
+import {Toast} from 'vant'
 export default {
     props: {
 
@@ -50,6 +88,7 @@ export default {
     data() {
         return {
           images:[],
+          goodsCs:'请选择参数',
           skuData:{
             sku: {
               tree: [
@@ -91,22 +130,21 @@ export default {
               list: [
                   {
                     id: 2259,
-                    price: 120,
-                    //价格
-                    discount: 122,
+                    price: 100,
+                    // discount: 122,
                     s1: '1215',
                     s2: '1193',
                     s3: '0',
                     s4: '0',
                     s5: '0',
-                    stock_num: 20,
+                    stock_num: 40,
                     //库存 
                     goods_id: 946755
                   },
                   {
                       id: 2260,
                       price: 110,
-                      discount: 112,
+                      // discount: 112,
                       s1: '1215',
                       s2: '1194',
                       s3: '0',
@@ -118,21 +156,21 @@ export default {
                   },
                   {
                       id: 2257,
-                      price: 130,
-                      discount: 132,
+                      price: 100,
+                      // discount: 132,
                       s1: '30349',
                       s2: '1193',
                       s3: '0',
                       s4: '0',
                       s5: '0',
-                      stock_num: 40,
+                      stock_num:60,
                       //库存 
                       goods_id: 946755
                   },
                   {
                       id: 2258,
-                      price: 100,
-                      discount: 100,
+                      price: 110,
+                      // discount: 100,
                       s1: '30349',
                       s2: '1194',
                       s3: '0',
@@ -143,12 +181,12 @@ export default {
                       goods_id: 946755
                   }
               ],
-              price: '5.00',
+              price: '100',
               stock_num: 227,
               // 商品总库存
               none_sku: false,
               // 是否无规格商品 
-              hide_stock: false // 是否隐藏剩余库存
+              hide_stock: false, // 是否隐藏剩余库存
             },
             goods_id: '946755',
             quota: 3,
@@ -165,7 +203,7 @@ export default {
                 selectedNum: 3
             }
          },
-          showBase: true,
+          showBase: false,
           showCustom: false,
           showStepper: false,
           showSoldout: false,
@@ -196,11 +234,26 @@ export default {
         this.images = list
       },
       onBuyClicked(data) {
-        this.$toast('buy:' + JSON.stringify(data));
-        console.log(JSON.stringify(data))
+        let {selectedNum} = data
+        let {price} = data.selectedSkuComb
+        let str = '';
+        this.$refs.good_sku.selectedSkuValues.forEach(item => {
+            str += item.name + " +"
+        });
+        this.goodsCs = str.substr(0,str.length-1);
+        this.showBase = false;
       },
       onAddCartClicked(data) {
-        this.$toast('add cart:' + JSON.stringify(data));
+        this.showBase = false;
+      },
+      changeGood () {
+        this.showBase = !this.showBase;
+      },
+      onClickIcon() {
+        Toast('点击图标');
+      },
+      onClickButton() {
+        Toast('点击按钮');
       }
     },
     components: {
@@ -212,6 +265,15 @@ export default {
 <style scoped lang="scss">
   .home-swiper{margin-top:40px;}
   .goodDetail{width:100%;padding:0 10px;box-sizing:border-box;background:#f8f8f8;}
+  .good_main_Cs{
+    margin-top:20px;
+    height:30px;
+    line-height:30px;
+    border-bottom:1px solid #eee;
+
+    
+    .text{margin-left:20px;}
+  }
   .good_main{
     text-align:left;
     padding:0 20px;
@@ -248,6 +310,16 @@ export default {
       padding-bottom:10px;
     }
 
+    h5{
+      display:flex;
+      align-items:center;
+      height:30px;
+
+      p {
+        flex:1;
+      }
+    }
+
   }
- /deep/ .van-sku-group-container {text-align: left;}
+ /deep/ .van-sku-group-container, /deep/ .van-sku-header__goods-info {text-align: left;}
 </style>
